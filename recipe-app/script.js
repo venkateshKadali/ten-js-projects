@@ -2,6 +2,10 @@ const mealsEl = document.getElementById("meals");
 const favContainer = document.getElementById("fav-meals");
 const searchTerm = document.getElementById("search-term");
 const searchBtn = document.getElementById("search");
+const mealPopup = document.getElementById("meal-popup");
+const popupCloseBtn = document.getElementById("close-popup");
+const mealInfoEl = document.getElementById("meal-info");
+
 
 let getRandomMeal = async () => {
     const response = await fetch(
@@ -69,6 +73,10 @@ let addMeal = (mealData, random = false) => {
         fetchFavMeals();
     });
 
+    meal.addEventListener('click', () => {
+        showMealInfo(mealData);
+    });
+
     mealsEl.appendChild(meal);
 }
 
@@ -121,8 +129,47 @@ let addMealToFav = (mealData) => {
         fetchFavMeals();
     });
 
+    favMeal.addEventListener("click", () => {
+        showMealInfo(mealData);        
+    });
+
     favContainer.appendChild(favMeal);
     
+}
+
+showMealInfo = (mealData) => {
+    // clean it up
+    mealInfoEl.innerHTML = "";
+
+    // update meal info and show it
+    const mealEl = document.createElement("div");
+
+    const ingredients = [];
+    // get ingredients and measures
+    for (let i = 1; i <= 20; i++) {
+        if (mealData["strIngredient"+i]) {
+            ingredients.push(`${mealData["strIngredient" + i]} -
+            ${mealData["strMeasure" + i]}`);
+        } else {
+            break;
+        }
+    }
+    
+    mealEl.innerHTML = `
+        <h1>${mealData.strMeal}</h1>
+        <img src="${mealData.strMealThumb}" alt="${mealData.strMeal}">
+        <p>${mealData.strInstructions}
+        </p>
+        <h3>Ingredients:</h3>
+        <ul>
+            ${ingredients.map((ing) => `
+            <li>${ing}</li>`).join("")}
+        </ul>
+    `;
+    mealInfoEl.appendChild(mealEl);
+
+    mealPopup.classList.remove('hidden');
+
 }
 
 searchBtn.addEventListener("click", async () => {
@@ -136,6 +183,10 @@ searchBtn.addEventListener("click", async () => {
             addMeal(meal);
         })
     }
+});
+
+popupCloseBtn.addEventListener("click", () => {
+    mealPopup.classList.add("hidden");
 });
 
 getRandomMeal();

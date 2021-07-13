@@ -8,3 +8,6 @@ https://www.uidesigndaily.com/posts/sketch-questionnaire-choice-submit-day-924
 https://www.uidesigndaily.com/posts/sketch-recipe-app-food-mobile-day-615
 
 4) Notes App
+https://www.uidesigndaily.com/posts/photoshop-notes-widget-day-65
+
+5) TODO App
